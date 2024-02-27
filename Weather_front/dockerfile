@@ -1,0 +1,20 @@
+# 기반 이미지로 Node.js 13.12.0 Alpine 이미지 사용 
+FROM node:13.12.0-alpine 
+
+# 작업 디렉터리를 /react-to-do/frontend로 설정 
+WORKDIR /react-to-do/frontend 
+
+# 환경 변수 PATH에 /app/node_modules/.bin을 추가 
+ENV PATH /app/node_modules/.bin:$PATH 
+
+# package.json과 package-lock.json을 복사하여 이미지의 /react-to-do/frontend 디렉터리에 붙여넣음 
+COPY package.json package-lock.json ./ 
+
+# npm install 명령어를 실행하여 package.json에 명시된 의존성 패키지 설치 
+RUN npm install  
+
+# 현재 디렉터리의 모든 파일을 이미지의 /react-to-do/frontend 디렉터리에 복사 
+COPY . ./ 
+
+# 컨테이너가 시작될 때 npm start 명령어를 실행하여 React 앱을 시작 
+CMD ["npm", "start"] 

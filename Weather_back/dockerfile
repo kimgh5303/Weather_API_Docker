@@ -1,0 +1,12 @@
+# FROM <이미지명>:<태그>
+FROM openjdk:17
+# Docker 기본 이미지, openjdk:[프로젝트의 jdk버전]
+ARG JAR_FILE=/build/libs/*.jar
+# ARG
+# 변수선언. JAR_FILE을 *.jar파일로 지정
+COPY ${JAR_FILE} app.jar
+# COPY
+# JAR_FILE을 컨테이너의 app.jar로 복사
+ENTRYPOINT ["java","-jar","/app.jar"]
+# ENTRYPOINT
+# 컨테이너 시작 시 스크립트 실행

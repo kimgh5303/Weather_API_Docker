@@ -1,0 +1,46 @@
+services:
+    nginx:
+        restart: always
+        container_name: 3tier_nginx
+        image: kimgh5303/3tier_nginx:tier
+        ports:
+            - "3000:80"
+        networks:
+            - 3team
+    front:
+        restart: always
+        container_name: 3tier_front
+        image: kimgh5303/3tier_front:tier
+        networks:
+          - 3team
+
+    back:
+        container_name: 3tier_back
+        restart: on-failure
+        image: kimgh5303/3tier_back:tier
+        ports:
+        - "8080:8080"
+        networks:
+             - 3team
+        environment:
+            SPRING_DATASOURCE_URL: jdbc:mysql://3tier_db:3306/weather?useSSL=false&allowPublicKeyRetrieval=true
+            SPRING_DATASOURCE_USERNAME: "root"
+            SPRING_DATASOURCE_PASSWORD: "1234"
+        depends_on:
+            - db
+
+    db:
+        container_name: 3tier_db
+        image: kimgh5303/3tier_db:tier
+        restart: unless-stopped
+        ports:
+            - "3306:3306"
+        networks:
+            - 3team
+        volumes:
+            - ./mysql/conf.d:/etc/mysql/conf.d
+            - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+networks:
+   3team:
+      external: true

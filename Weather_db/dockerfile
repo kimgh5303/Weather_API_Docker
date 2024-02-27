@@ -1,0 +1,8 @@
+FROM mysql:8.0.22
+
+ENV MYSQL_DATABASE=weather \
+    MYSQL_ROOT_HOST='%' \
+    MYSQL_ROOT_PASSWORD=1234 \
+    TZ='Asia/Seoul'
+
+CMD ["mysqld", "--character-set-server=utf8mb4", "--collation-server=utf8mb4_unicode_ci"]
